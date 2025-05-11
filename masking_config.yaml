@@ -1,0 +1,49 @@
+# PII masking configuration
+
+# NLP engine configuration
+language: ja
+model_name: ja_core_news_trf
+score_threshold: 0.5
+
+# Entity types to detect/anonymize (None for all supported types)
+entity_types:
+  - PERSON
+  - PHONE_NUMBER
+  - EMAIL_ADDRESS
+  - ADDRESS
+  - BIRTHDATE
+  - JP_MY_NUMBER
+
+# Operator configurations per entity type
+operators:
+  PERSON:
+    operator: replace
+    params:
+      new_value: "[個人名]"
+  PHONE_NUMBER:
+    operator: mask
+    params:
+      masking_char: "*"
+      chars_to_mask: 8
+      from_end: false
+  EMAIL_ADDRESS:
+    operator: replace
+    params:
+      new_value: "[メールアドレス]"
+  ADDRESS:
+    operator: replace
+    params:
+      new_value: "[住所]"
+  BIRTHDATE:
+    operator: replace
+    params:
+      new_value: "[生年月日]"
+  JP_MY_NUMBER:
+    operator: replace
+    params:
+      new_value: "[マイナンバー]"
+
+# Default operator for entities without specific configuration
+default_operator:
+  operator: replace
+  params: {}
